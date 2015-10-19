@@ -17,6 +17,24 @@ var Terrain = new function(){
                 ctx.fillRect(px,py,ts,ts);
                 ctx.restore();
             },true
+        ],
+        [
+            function(ctx,px,py,ts){
+                ctx.save();
+                ctx.fillStyle = "green";
+                ctx.fillRect(px,py,ts,ts);
+                var img = Media.tree;
+                ctx.drawImage(img,px,py-25,ts,ts+25);
+                ctx.restore();
+            },false
+        ],
+        [
+            function(ctx,px,py,ts){
+                ctx.save();
+                ctx.fillStyle = "grey";
+                ctx.fillRect(px,py,ts,ts);
+                ctx.restore();
+            },false
         ]
     ]
 

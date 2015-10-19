@@ -22,6 +22,7 @@ var Render = new function(){
     //     }
     // }
 
+    var loops = 0;
     var _maprender = function(){
         var tileSize = canvas.width / Camera.fov;
         var _camera = Camera.GetPos();
@@ -40,19 +41,19 @@ var Render = new function(){
         }
 
         var _drawTile = function(x,y,px,py){
-            if(!worldmap.getTile(x,y)) {
+            if(worldmap.getTile(x,y) === "void") {
                 ctx.save();
                 ctx.fillStyle = "red";
                 ctx.fillRect(px,py,tileSize+1,tileSize+1);
                 ctx.restore();
             }else{
-                ctx.strokeRect(px,py,tileSize,tileSize);
+                // ctx.strokeRect(px,py,tileSize,tileSize);
                 // ctx.fillText(worldmap.getTile(x,y)[0],px+tileSize/2-5,py+tileSize/2+5);
-                ctx.fillText(x+"-"+y,px+tileSize/2-5,py+tileSize/2+5);
+                // ctx.fillText(x+"-"+y,px+tileSize/2-5,py+tileSize/2+5);
 
-                // Terrain.Draw(worldmap.getTile(x,y)[0],ctx,px,py,tileSize);
+                Terrain.Draw(worldmap.getTile(x,y),ctx,px,py,tileSize+1);
                 
-                _drawItems(_camera.x + x,_camera.y + y, x*tileSize, y*tileSize);
+                _drawItems( x, y, px, py);
             }
         }
 
