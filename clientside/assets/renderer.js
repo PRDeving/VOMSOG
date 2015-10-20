@@ -1,8 +1,15 @@
 var Render = new function(){
+    var _debug = {
+        grid: false,
+        tileValue: false,
+        tileCoors: false
+    }
+
     var canvas;
     var ctx;
 
     var _pool = [];
+
 
     var _init = function(c){
         canvas = c;
@@ -13,30 +20,26 @@ var Render = new function(){
         _pool.push(item);
     }
 
-    // var _remove = function(item){
-    //     for(var x = 0; x < _pool.length){
-    //         if(_pool[x].id && _pool[x].id == item){
-    //             _pool.splice(x,1);
-    //             break;
-    //         }
-    //     }
-    // }
-
-    var loops = 0;
+    var firstloop = true;
     var _maprender = function(){
         var tileSize = canvas.width / Camera.fov;
         var _camera = Camera.GetPos();
         var tiles = [Camera.fov, Math.floor(canvas.height/tileSize)];
-
-        for(var i in _pool){
-            if(_pool[i].hasOwnProperty("Update"))
-                _pool[i].Update();
-        }
+        _pool.length = 0;
+        _pool = [];
+        _pool = Elements.getElementsIn(_camera.x,_camera.y,_camera.x+tiles[0],_camera.y+tiles[1]);
 
         var _drawItems = function(x,y,px,py){
             for(var i in _pool){
-                if(_pool[i].pos.x == x && _pool[i].pos.y == y && _pool[i].hasOwnProperty("Draw"))
+                if(_pool[i].pos.x == x && _pool[i].pos.y == y && _pool[i].hasOwnProperty("Draw")){
+                    if(_pool[i] == selected){
+                        ctx.save();
+                        ctx.fillStyle = "rgba(255,255,255,0.4)";
+                        ctx.fillRect(px,py,tileSize-1,tileSize-1);
+                        ctx.restore();
+                    }
                     _pool[i].Draw(ctx,px,py,tileSize);
+                }
             }
         }
 
@@ -47,13 +50,23 @@ var Render = new function(){
                 ctx.fillRect(px,py,tileSize+1,tileSize+1);
                 ctx.restore();
             }else{
-                // ctx.strokeRect(px,py,tileSize,tileSize);
-                // ctx.fillText(worldmap.getTile(x,y)[0],px+tileSize/2-5,py+tileSize/2+5);
-                // ctx.fillText(x+"-"+y,px+tileSize/2-5,py+tileSize/2+5);
 
-                Terrain.Draw(worldmap.getTile(x,y),ctx,px,py,tileSize+1);
+                Terrain.Draw(x,y,ctx,px,py,tileSize+1);
+                if(worldmap.getTile(x,y-1) == 4 && (worldmap.getTile(x,y) == 1 || worldmap.getTile(x,y) == 3)){
+                    ctx.save();
+                    ctx.fillStyle = "#024700";
+                    ctx.fillRect(px,py - tileSize/5, tileSize, tileSize/5);
+                    ctx.restore();
+                }
                 
                 _drawItems( x, y, px, py);
+
+                if(_debug.grid)
+                    ctx.strokeRect(px,py,tileSize,tileSize);
+                if(_debug.tileValue)
+                    ctx.fillText(worldmap.getTile(x,y)[0],px+tileSize/2-5,py+tileSize/2+5);
+                if(_debug.tileCoors)
+                    ctx.fillText(x+"-"+y,px+tileSize/2-5,py+tileSize/2+5);
             }
         }
 
@@ -65,9 +78,15 @@ var Render = new function(){
 
     }
 
+    var _clearPool = function(){
+        _pool.length = 0;
+        _pool = [];
+    }
+
     this.Init = _init;
     this.Add = _add;
     // this.Remove = _remove;
     this.MapRender = _maprender;
     this.Pool = _pool;
+    this.ClearPool = _clearPool;
 }

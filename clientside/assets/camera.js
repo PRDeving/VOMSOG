@@ -3,8 +3,9 @@ var Camera = new function(){
     var fov = 50;
 
     var _Move = function(x,y){
-        (pos[0] + x >= 0 && pos[0] + x <= worldmap.size)? pos[0] += x: false;
-        (pos[1] + y >= 0 && pos[1] + y <= worldmap.size)? pos[1] += y: false;
+        var canvas = document.getElementById("mycanvas");
+        (pos[0] + x >= 0 && pos[0] + x <= worldmap.size-fov-1)? pos[0] += x: false;
+        (pos[1] + y >= 0 && pos[1] + y <= worldmap.size-Math.round(canvas.height/(canvas.width/fov)) - 1)? pos[1] += y: false;
     }
 
     var _getPos = function(){
