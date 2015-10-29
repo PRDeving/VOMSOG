@@ -1,0 +1,52 @@
+<head>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .gui-container {
+            position: absolute;
+            z-index: 9;
+        }
+        .gui-item {
+            width: 20px;
+            height: 20px;
+            float: left;
+            margin-right: 3px;
+            color: white;
+            background-color: black;
+
+            cursor: pointer;
+        }
+
+        .modal {
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            display: none;
+
+            padding: 20px;
+            background: white;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="mycanvas"></canvas>
+    <script app="app.js" src="SGE/engine.js"></script>
+
+    <div class="modal troops">
+        <label> </label><input type="text" id="i"></input><br />
+        <label> </label><input type="text" id="a"></input><br />
+        <label> </label><input type="text" id="c"></input><br />
+        <div class="submit" onclick="ModalRun=true" >Confirm</div>
+    </div>
+
+    <div class="modal gold">
+        <label> </label><input type="text" id="g"></input><br />
+        <div class="submit" onclick="ModalRun=true" >Confirm</div>
+    </div>
+
+
+</body>

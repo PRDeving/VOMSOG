@@ -17,6 +17,11 @@ var Elements = new function(){
             if(_pool[i] == el) _pool.splice(i,1);
     }
 
+    var _getElement = function(id){
+        for(var e in _pool)
+            if(_pool[e].id == id) return _pool[e];
+    }
+
     var _getElementsIn = function(x,y,x2,y2){
         var _elems = [];
         if(!x2){
@@ -34,8 +39,15 @@ var Elements = new function(){
         return _elems;
     }
 
+    var _setElements = function(els){
+        _pool = JSON.parse(els);
+    }
+
     this.Add = _add;
     this.Update = _update;
     this.getElementsIn = _getElementsIn;
+    this.getElement = _getElement;
+    this.setElements = _setElements;
+    this.pool = function(){return _pool};
     this.Remove = _remove;
 }

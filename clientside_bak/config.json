@@ -1,0 +1,8 @@
+{
+    "Debug": true,
+    "modules": [
+        "scenemanager",
+        "gameloop",
+        "mousemanager"
+    ]
+}

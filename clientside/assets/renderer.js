@@ -20,6 +20,7 @@ var Render = new function(){
         _pool.push(item);
     }
 
+
     var firstloop = true;
     var _maprender = function(){
         var tileSize = canvas.width / Camera.fov;
@@ -27,20 +28,41 @@ var Render = new function(){
         var tiles = [Camera.fov, Math.floor(canvas.height/tileSize)];
         _pool.length = 0;
         _pool = [];
-        _pool = Elements.getElementsIn(_camera.x,_camera.y,_camera.x+tiles[0],_camera.y+tiles[1]);
+        _pool = GetElementsIn(_camera.x,_camera.y,_camera.x+tiles[0],_camera.y+tiles[1]);
+        // _pool = Elements.getElementsIn(_camera.x,_camera.y,_camera.x+tiles[0],_camera.y+tiles[1]);
 
         var _drawItems = function(x,y,px,py){
             for(var i in _pool){
-                if(_pool[i].pos.x == x && _pool[i].pos.y == y && _pool[i].hasOwnProperty("Draw")){
-                    if(_pool[i] == selected){
+                if(_pool[i][2].x == x && _pool[i][2].y == y){
+                    if(_pool[i][1] == "army" && _pool[i][3] == faction){
                         ctx.save();
-                        ctx.fillStyle = "rgba(255,255,255,0.4)";
-                        ctx.fillRect(px,py,tileSize-1,tileSize-1);
+                        ctx.fillStyle = "violet";
+                        ctx.fillRect(px,py, tileSize, tileSize);
+                        ctx.restore();
+                    }else if(_pool[i][1] == "army" && _pool[i][3] != faction){
+                        ctx.save();
+                        ctx.fillStyle = "red";
+                        ctx.fillRect(px,py, tileSize, tileSize);
+                        ctx.restore();
+                    }else if(_pool[i][1] == "village"){
+                        ctx.save();
+                        ctx.fillStyle = "grey";
+                        ctx.fillRect(px,py, tileSize, tileSize);
                         ctx.restore();
                     }
-                    _pool[i].Draw(ctx,px,py,tileSize);
                 }
             }
+            // for(var i in _pool){
+            //     if(_pool[i].pos.x == x && _pool[i].pos.y == y && _pool[i].hasOwnProperty("Draw")){
+            //         if(_pool[i] == selected){
+            //             ctx.save();
+            //             ctx.fillStyle = "rgba(255,255,255,0.4)";
+            //             ctx.fillRect(px,py,tileSize-1,tileSize-1);
+            //             ctx.restore();
+            //         }
+            //         _pool[i].Draw(ctx,px,py,tileSize);
+            //     }
+            // }
         }
 
         var _drawTile = function(x,y,px,py){

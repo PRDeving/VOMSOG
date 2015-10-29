@@ -1,0 +1,40 @@
+<head></head>
+<body>
+
+    <script src="assets/socket.io.js"></script>
+    <script>
+        var socket = io('http://localhost:1111');
+        var uid = (sessionStorage.getItem("uid")) ? sessionStorage.getItem("uid"): false;
+        var sid;
+
+        if(uid){
+            socket.emit('uid-handshake',uid);
+        }else{
+            socket.emit('uid-request')
+        }
+
+        socket.on('uid-set', function (data) {
+            sessionStorage.setItem("uid",data);
+            uid = data;
+            console.log(uid);
+
+            socket.emit('game-request',uid);
+        });
+
+        socket.on('game-set', function(ans){
+            console.log(ans);
+        });
+
+        socket.on('game-mapCreate', function(sid){
+            socket.emit('game-created', {sid:sid,map:"mapa"+uid});
+            document.getElementsByTagName("body")[0].innerHTML = "seed";
+        });
+
+        socket.on('game-mapPropagation', function(map){
+            document.getElementsByTagName("body")[0].innerHTML += map;
+        });
+
+
+    </script>
+</body>
+
