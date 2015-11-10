@@ -6,10 +6,10 @@ module.exports =  function(){
             return _pool[_pool.length-1]
         }
 
-        var _update = function(el,fac,map,act){
+        var _update = function(el,fac,map,act,ps){
             for(var i in _pool)
                 if(_pool[i].hasOwnProperty("Update"))
-                    _pool[i].Update(el,fac,map,act);
+                    _pool[i].Update(el,fac,map,act,ps);
         }
 
         var _remove = function(el){

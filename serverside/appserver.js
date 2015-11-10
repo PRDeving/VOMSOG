@@ -27,6 +27,16 @@ var Games = new function(){
     var Game = function(sid,players){
         var _sid = sid;
         var _players = players;
+        // var _playersocket = false;
+
+        var _playersocket = (function(){
+            var temp = {};
+            for(var i = 0; i < _players.length; i++){
+                temp[_players[i]] = clients[_players[i]];
+            }
+
+            return temp;
+        })();
 
         var _factions = []
         _factions.push(new Faction(_players[0],"206,102,0","faccion 1"));
@@ -55,7 +65,7 @@ var Games = new function(){
 
         var _Update = function(){
             _actions.Update(_elements,_factions,_map);
-            _elements.Update(_elements, _factions, _map, _actions);
+            _elements.Update(_elements, _factions, _map, _actions, _playersocket);
         }
 
         var _Turn = function(){
@@ -213,6 +223,9 @@ function FindClient(sk){
         if(clients[i] == sk) return i;
     return false;
 }
+// function FindSocket(uid){
+//     return 
+// }
 
 function UserIdentify(uid,socket){
     clients[uid] = socket;
@@ -222,6 +235,8 @@ function UserIdentify(uid,socket){
 
     if(c_waiting.length > 0){
         var sid = Math.floor(Math.random()*9999999999+1);
+        console.log(uid+" and "+c_waiting[0]+" in lobby.");
+        console.log("creating "+sid+" ...");
         Games.New(sid,[uid,c_waiting[0]]);
         c_waiting.splice(0,1);
     }else{

@@ -98,6 +98,10 @@ function Main(){
         }
     });
 
+    socket.on('game-weekly-report',function(data){
+        console.log(data);
+        // weeklyReport(data);
+    });
 
     selected = false;
     timescale = 60;
@@ -302,3 +306,29 @@ function PathTo(selected,dx,dy,cb){
 function rand(min,max){
     return Math.floor((Math.random()*max)+min);
 }
+
+// function weeklyReport(data){
+//     var $wrm = $("#weekly-report-modal");
+//     var $ac = $wmr.find("#armies-container");
+//     $ac.empty();
+//
+//     var armies = data.armies;
+//     var bgold = data.bgold;
+//     var agold = data.agold;
+//
+//     for(var i in armies){
+//         var ar = armies[i];
+//         var tr = armies[i].troops;
+//         $ac.append(
+//             $("<div>").addClass("item").append({
+//                 $("<label>").addClass("troops").html("Infantery: "+tr.i+" Archery: "+tr.a+" Chivalry: "+tr.c),
+//                 $("<label>").addClass("food").html("consumes: "+ar.consumes+", "+ar.food+" left"),
+//                 $("<label>").addClass("gold").html("costs: "+ar.costs)
+//             });
+//         );
+//     }
+//
+//     $wrm.find("#balance").html("you had "+bgold+", but, with "+bgold-agold+" pieces in costs you own "+agold+" pieces of gold");
+//
+//     $wrm.show();
+// }

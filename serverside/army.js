@@ -44,14 +44,16 @@ module.exports = function Army(x,y,f){
     var _factions;
     var _map;
     var _actions;
+    var _playersocket = {};
 
-    var _update = function(gel,gfac,gmap,gact){
+    var _update = function(gel,gfac,gmap,gact,ps){
         sc++;
 
         _elements = gel;
         _factions = gfac;
         _map = gmap;
         _actions = gact;
+        _playersocket = ps;
 
         if(_pool.length > 0 && sc % (speed*Terrain.Cost(_map.getTile(_pool[0].x,_pool[0].y))) == 0 ){
             var elit = _elements.getElementsIn(_pool[0].x,_pool[0].y);
@@ -103,9 +105,22 @@ module.exports = function Army(x,y,f){
             }
         }
 
-        if(sc % 5 == 0){
+        if(sc % 60 == 0){
+            var bgold = _factions[_faction].Pays(0);
             _salary();
             _lunch();
+            var agold = _factions[_faction].Pays(0);
+
+            _playersocket[_factions[_faction].uid].emit('game-weekly-report',{
+                army:{
+                    troops: _troops,
+                    consumes: _consumes(),
+                    costs: _costs(),
+                    food: _food
+                },
+                bgold: bgold,
+                agold: agold
+            });
         }
 
         if(_takeaction){
