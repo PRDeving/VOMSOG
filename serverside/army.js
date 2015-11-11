@@ -105,7 +105,7 @@ module.exports = function Army(x,y,f){
             }
         }
 
-        if(sc % 60 == 0){
+        if(sc % 5 == 0){
             var bgold = _factions[_faction].Pays(0);
             _salary();
             _lunch();
@@ -116,7 +116,8 @@ module.exports = function Army(x,y,f){
                     troops: _troops,
                     consumes: _consumes(),
                     costs: _costs(),
-                    food: _food
+                    food: _food,
+                    pos: _pos()
                 },
                 bgold: bgold,
                 agold: agold

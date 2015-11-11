@@ -99,8 +99,7 @@ function Main(){
     });
 
     socket.on('game-weekly-report',function(data){
-        console.log(data);
-        // weeklyReport(data);
+        weeklyReport(data);
     });
 
     selected = false;
@@ -264,6 +263,10 @@ function Main(){
         }
     };
 
+    $(".element-pos").on("click",function(e){
+        console.log(this);
+    });
+
 }
 
 function GetElement(id){
@@ -307,28 +310,26 @@ function rand(min,max){
     return Math.floor((Math.random()*max)+min);
 }
 
-// function weeklyReport(data){
-//     var $wrm = $("#weekly-report-modal");
-//     var $ac = $wmr.find("#armies-container");
-//     $ac.empty();
-//
-//     var armies = data.armies;
-//     var bgold = data.bgold;
-//     var agold = data.agold;
-//
-//     for(var i in armies){
-//         var ar = armies[i];
-//         var tr = armies[i].troops;
-//         $ac.append(
-//             $("<div>").addClass("item").append({
-//                 $("<label>").addClass("troops").html("Infantery: "+tr.i+" Archery: "+tr.a+" Chivalry: "+tr.c),
-//                 $("<label>").addClass("food").html("consumes: "+ar.consumes+", "+ar.food+" left"),
-//                 $("<label>").addClass("gold").html("costs: "+ar.costs)
-//             });
-//         );
-//     }
-//
-//     $wrm.find("#balance").html("you had "+bgold+", but, with "+bgold-agold+" pieces in costs you own "+agold+" pieces of gold");
-//
-//     $wrm.show();
-// }
+function weeklyReport(data){
+    var $wrm = $("#weekly-report-modal");
+    var $ac = $wrm.find("#armies-container");
+    $ac.empty();
+
+    var army = data.army;
+    var tr = army.troops;
+    var bgold = data.bgold;
+    var agold = data.agold;
+
+    $aci = $("<div>").addClass("item");
+
+    $aci.append($("<label>").html("<span onclick='Camera.Focus("+army.pos.x+","+army.pos.y+")'>One of your armies</span> has been payed and feed <br/>Troops: "));
+    $aci.append($("<label>").addClass("troops").html("Infantery: "+tr.i+" Archery: "+tr.a+" Chivalry: "+tr.c));
+    $aci.append($("<label>").addClass("cons").html("<br/>This army consumes: "+army.consumes+" rations weekly and costs: "+army.costs+" pieces of gold"));
+    $aci.append($("<label>").html("<br/>This army and has "+data.army.food+" rations of food left"));
+    
+    $ac.append($aci);
+
+    $wrm.find("#balance").html("<br/>you had "+bgold+", but, with "+ (bgold - agold) +" pieces in costs you now owns "+agold+" pieces of gold");
+
+    // $wrm.show();
+}

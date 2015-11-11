@@ -8,6 +8,14 @@ var Camera = new function(){
         (pos[1] + y >= 0 && pos[1] + y <= worldmap.size-Math.round(canvas.height/(canvas.width/fov)) - 1)? pos[1] += y: false;
     }
 
+    var _Focus = function(x,y){
+        var canvas = document.getElementById("mycanvas");
+        xpoint = x-(fov/2);
+        ypoint = y-Math.round(canvas.height/(canvas.width/fov));
+
+        pos = [xpoint,ypoint];
+    }
+
     var _getPos = function(){
         return {x:pos[0],y:pos[1]};
     }
@@ -17,4 +25,5 @@ var Camera = new function(){
     this.fov = fov;
     this.Move = _Move;
     this.GetPos = _getPos;
+    this.Focus = _Focus;
 }
